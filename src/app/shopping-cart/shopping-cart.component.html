@@ -1,0 +1,56 @@
+<h1 class="mb-4">Shopping Cart</h1>
+<div class="card" *ngIf="cart$ | async as cart" style="width: 80%;">
+    <div class="card-body padTp">
+        <p>
+            You have {{ cart.totalItemsCount }} items in your shopping cart.
+            <button
+                *ngIf="cart.items.length"
+                (click)="clearCart()"
+                class="float-right btn btn-dark btn-sm">
+                Clear Cart
+            </button>
+        </p>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Product</th>
+                <th>Product Price</th>
+                <th class="text-center" style="width: 280px">Quantity</th>
+                <th class="text-right" style="width: 200px">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of cart.items">
+                <td>
+                    <div [style.backgroundImage]="'url(' + item.imageUrl + ')'" class="thumbnail"></div>
+                </td>
+                <td class="paddingTop">{{ item.title }}</td>
+                <td class="text-right paddingTop">
+                    {{ item.price | currency :'GBP'}}</td>
+                <td class="paddTop">
+                    <product-quantity [product]="item" [shopping-cart]="cart"></product-quantity>
+                </td>
+                <td class="text-right paddingTop">
+                    {{ item.totalPrice | currency :'GBP'}}
+                </td>
+            </tr>
+        </tbody>
+        <tfoot >
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th class="text-right">Total Price {{ cart.totalPrice | currency:'GBP' }}</th>
+            </tr>
+            <tr>
+                <th colspan="2" class="text-center"> <a routerLink="/" class="btn btn-primary padTp">Add More items</a></th>
+              <th colspan="5" class="text-center">
+                <a *ngIf="cart.items.length" routerLink="/check-out" class="btn btn-primary padTp">Check Out</a>
+              </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
